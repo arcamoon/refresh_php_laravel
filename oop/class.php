@@ -6,16 +6,16 @@ namespace Sale;
 
 class Sale
 {
-    public int $total;
-    public string $fecha;
-    public array $concepts;
+    public float $total;
+    private string $date;
+    private array $concepts;
 
     public static $count;
 
-    public function __construct(int $total, string $fecha)
+    public function __construct(string $fecha)
     {
-        $this->total = $total;
-        $this->fecha = $fecha;
+        $this->total = 0;
+        $this->date = $fecha;
         $this->concepts = [];
         self::$count++;
     }
@@ -37,7 +37,22 @@ class Sale
 
     public function createInvoice(): string
     {
-        return "Se crea la factura";
+        return "w";
+    }
+
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date)
+    {
+        if (strlen($date) > 10) {
+            echo "La fecha es incorrecta";
+        } else {
+            echo "Fecha modificada exitosamente";
+            $this->date = $date;
+        }
     }
 }
 
@@ -53,13 +68,27 @@ class Concept
     }
 }
 
+class OnlineSale extends Sale
+{
+    public string $paymentMethod;
 
-$sale = new Sale(100, "02-10-2026");
+    public function __construct(string $fecha, string $paymentMethod)
+    {
+        parent::__construct($fecha);
+        $this->paymentMethod = $paymentMethod;
+    }
+
+    public function showInfo(): string
+    {
+        return "La venta tiene un monto de $this->total";
+    }
+}
+
+
+$sale = new Sale("02-10-2026");
 echo gettype($sale);
 print_r($sale);
 
-$sale->total = 200;
-$sale->fecha = "03/04/2025";
 
 print_r($sale);
 
@@ -69,3 +98,23 @@ Sale::reset();
 echo Sale::$count;
 
 echo gettype($sale->total);
+
+$concept = new Concept("descripcion", 100);
+$concept2 = new Concept("cerveza 2", 20.23);
+
+echo "<br>";
+$onlineSale = new OnlineSale(date("Y-m-d"), "tarjeta");
+$res = $onlineSale-> createInvoice();
+print_r($onlineSale);
+
+echo "<br>";
+print($res);
+$onlineSale->addConcept($concept);
+$onlineSale->addConcept($concept2);
+print_r($onlineSale);
+
+echo "<br>";
+echo $onlineSale->getDate();
+
+$onlineSale->setDate("10/10/2010");
+echo $onlineSale->getDate();
