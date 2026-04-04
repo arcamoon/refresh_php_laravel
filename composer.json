@@ -1,0 +1,15 @@
+{
+    "name": "arcamoon/curso",
+    "autoload": {
+        "psr-4": {
+            "Arcamoon\\Curso\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "arcamoon-wsl",
+            "email": "arcacorini@gmail.com"
+        }
+    ],
+    "require": {}
+}
