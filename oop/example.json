@@ -1,0 +1,11 @@
+{
+  "name": "Erdinger",
+  "alcohol": 15.6,
+  "id": 1,
+  "isStrong": true,
+  "localtion": {
+    "country": "México",
+    "state": "Jalisco"
+  },
+  "store": [4, 5, 40]
+}
