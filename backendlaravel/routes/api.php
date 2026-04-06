@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackendController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QueriesController;
@@ -12,7 +13,7 @@ Route::get("/test", function () {
     return "El backend funciona correctamente";
 });
 
-Route::get("/backend", [BackendController::class, 'getAll'])->middleware("checkvalue:4545,pato");
+Route::get("/backend", [BackendController::class, 'getAll']);
 Route::get("/backend/{id?}", [BackendController::class, 'get']);
 Route::post("/backend", [BackendController::class, 'create']);
 Route::put("/backend/{id}", [BackendController::class, 'update']);
@@ -28,4 +29,12 @@ Route::get("/query/method/join", [QueriesController::class, "join"]);
 Route::get("/query/method/groupBy", [QueriesController::class, "groupBy"]);
 
 Route::apiResource("/products", ProductController::class)
-    ->middleware([ LogRequest::class ]);
+    ->middleware(['jwt.auth', LogRequest::class ]);
+
+Route::post('/register', [ AuthController::class, 'register' ]);
+Route::post('/login', [ AuthController::class, 'login' ])->name('login');
+
+Route::middleware('jwt.auth')->group(function () {
+    Route::get('/who', [AuthController::class, 'who']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});

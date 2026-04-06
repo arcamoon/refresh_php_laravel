@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class UserRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,28 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ];
+    }
+
+    public function messages()
+    {
+        return  [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser una cadena de texto.',
+            'name.max' => 'El nombre no debe superar los 255 caracteres.',
+
+            'email.required' => 'El correo es obligatorio.',
+            'email.string' => 'El correo debe ser una cadena de texto.',
+            'email.email' => 'El correo debe tener un formato válido.',
+            'email.max' => 'El correo no debe superar los 255 caracteres.',
+            'email.unique' => 'El correo ya está registrado.',
+
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.string' => 'La contraseña debe ser una cadena de texto.',
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
         ];
     }
 }
