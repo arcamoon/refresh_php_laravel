@@ -20,7 +20,7 @@ class ProductController extends Controller
 
         $products = Product::skip($offset)->take($perPage)->get();
 
-        return response()->json([ $products]);
+        return response()->json($products);
     }
 
     public function store(Request $request)

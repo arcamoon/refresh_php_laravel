@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWT;
 
 class AuthController extends Controller
 {
@@ -80,6 +81,28 @@ class AuthController extends Controller
                 'error' => 'No se pudo cerrar la sesión, token inválido',
                 Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
+        }
+    }
+
+    public function refresh()
+    {
+        try {
+            $newToken = JWTAuth::refresh();
+
+            return response()->json(
+                [
+                    'token' => $newToken,
+                    'token_type' => 'bearer',
+                    'expires_in' => JWTAuth::factory()->getTTL() * 60,
+                ]
+            );
+        } catch (JWTException $e) {
+            return response()->json(
+                [
+                    'error' => 'Error al refrescar el token',
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 }
