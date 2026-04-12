@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackendController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QueriesController;
-use App\Http\Middleware\CheckValueInHeader;
 use App\Http\Middleware\LogRequest;
-use App\Http\Middleware\UpperCaseName;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/test", function () {
@@ -39,3 +38,5 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
 });
+
+Route::get('/info/message', [InfoController::class, 'message' ]);
